@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Raylib_cs;
+using System;
 using System.Numerics;
 
 namespace Game10003;
@@ -16,13 +17,15 @@ public class Player
 
     }
 
-
     //Draw player
     public void DrawPlayer()
     {
         Draw.LineSize = 0;
-        Draw.FillColor = Color.Gray;
+        Draw.FillColor = Color.Clear;
         Draw.Rectangle(position, size);
+        
+        Texture2D texturePlayer = Graphics.LoadTexture("../../../assets/Playerv2.png");
+        Graphics.Draw(texturePlayer, position - (Vector2.One * 10));
     }
 
     //Collision with enemy

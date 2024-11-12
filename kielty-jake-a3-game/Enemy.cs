@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Numerics;
 
 namespace Game10003;
@@ -9,7 +10,9 @@ public class Enemy
     public Vector2 size;
     public Vector2 velocity;
     public bool isVisible;
-    
+
+    Texture2D textureEnemy = Graphics.LoadTexture("../../../assets/EnemyV1.png");
+
     //Draw enemy on screen
     public void DrawEnemy()
     {
@@ -17,8 +20,9 @@ public class Enemy
         {
             //Draw Enemy Plane
             Draw.LineSize = 0;
-            Draw.FillColor = Color.DarkGray;
+            Draw.FillColor = Color.Clear;
             Draw.Rectangle(position, size);
+            Graphics.Draw(textureEnemy, position - (Vector2.One * 10));
         }
     }
 

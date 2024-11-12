@@ -1,4 +1,5 @@
 ﻿// Include code libraries you need below (use the namespace).
+using Raylib_cs;
 using System;
 using System.Numerics;
 
@@ -27,17 +28,18 @@ public class Game
 
         player.position.X = Window.Width / 2;
         player.position.Y = Window.Height - 100;
-        player.size = Vector2.One * 60;
+        player.size = Vector2.One * 80;
         player.speed = 450;
         player.health = 3;
         player.score = 0;
 
+        //Place clouds in random spots
         for (int i = 0; i < clouds.Length; i++)
         {
             Cloud cloud = new Cloud();
             cloud.size = new Vector2(60, 30);
             cloud.position.X = Random.Float(0, Window.Width - cloud.size.X);
-            cloud.position.Y = -cloud.size.Y;
+            cloud.position.Y = Random.Float(0, Window.Height * 2);
 
             clouds[i] = cloud;
         }
@@ -46,7 +48,7 @@ public class Game
         for (int i = 0; i < enemies.Length; i++)
         {
             Enemy enemy = new Enemy();
-            enemy.size = new Vector2(60, 30);
+            enemy.size = new Vector2(80, 80);
             enemy.position.X = Random.Float(0, Window.Width - enemy.size.X);
             enemy.position.Y = -enemy.size.Y;
 
@@ -60,7 +62,7 @@ public class Game
     /// </summary>
     public void Update()
     {
-        Window.ClearBackground(Color.OffWhite);
+        Window.ClearBackground(Color.Blue);
 
         player.Move();
 
@@ -112,9 +114,20 @@ public class Game
             {
                 enemies[i].DrawEnemy();
             }
-
             player.DrawPlayer();
-            Text.Draw($"HEALTH:{player.health}", Window.Size - new Vector2(785, 40));
+            DrawUI();
+        }
+
+        //Draws the UI
+        void DrawUI()
+        {
+            //UI Elements
+            Texture2D textureInterface = Graphics.LoadTexture("../../../assets/UI.png");
+            Graphics.Draw(textureInterface, 0, 0);
+            Text.Color = Color.Cyan;
+            Text.Size = 50;
+            Font uiText = Text.LoadFont("../../../assets/PixelSplitter-Bold.ttf");
+            Text.Draw($"{player.health}", Window.Size - new Vector2(715, 57), uiText);
         }
 
         //Draw Game Over Screen
@@ -123,9 +136,8 @@ public class Game
             Window.ClearBackground(Color.Black);
             Text.Size = 80;
             Text.Color = Color.Red;
-            Text.Draw("MISSION FAILED!", Window.Size - new Vector2(710, 350));
-            //Text.Size = 40;
-            //Text.Draw("(Press SPACE to try again)", Window.Size - new Vector2(650, 250));
+            Font uiText = Text.LoadFont("../../../assets/PixelSplitter-Bold.ttf");
+            Text.Draw("MISSION FAILED.", Window.Size - new Vector2(735, 350), uiText);
         }
     }
 }
