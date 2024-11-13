@@ -13,10 +13,13 @@ public class Game
 {
     // Place your variables here:
     Player player = new Player();
-    Enemy[] enemies = new Enemy[8];
+    Enemy[] enemies = new Enemy[4];
     Cloud[] clouds = new Cloud[10];
 
     int activeEnemyCount = 1;
+
+    Vector2 bgPosition = new Vector2(0, 0);
+    Vector2 bgMovement = new Vector2(0, 1);
 
     /// <summary>
     ///     Setup runs once before the game loop begins.
@@ -53,8 +56,7 @@ public class Game
             enemy.position.Y = -enemy.size.Y;
 
             enemies[i] = enemy;
-        }    
-
+        }
     }
 
     /// <summary>
@@ -62,7 +64,7 @@ public class Game
     /// </summary>
     public void Update()
     {
-        Window.ClearBackground(Color.Blue);
+        Window.ClearBackground(Color.White);
 
         player.Move();
 
@@ -88,7 +90,7 @@ public class Game
             bool didEnemyWrap = enemies[i].KeepEnemyOnScreen();
             if (didEnemyWrap && activeEnemyCount < enemies.Length)
             {
-                activeEnemyCount++;
+                activeEnemyCount ++;
             }
         }
 
@@ -105,6 +107,8 @@ public class Game
         //Draw the game. Enemies, health, score, etc. 
         void DrawGame()
         {
+            DrawBackground();
+
             for (int i = 0; i < clouds.Length; i++)
             {
                 clouds[i].DrawCloud();
@@ -114,7 +118,9 @@ public class Game
             {
                 enemies[i].DrawEnemy();
             }
+
             player.DrawPlayer();
+
             DrawUI();
         }
 
@@ -124,10 +130,31 @@ public class Game
             //UI Elements
             Texture2D textureInterface = Graphics.LoadTexture("../../../assets/UI.png");
             Graphics.Draw(textureInterface, 0, 0);
+
+            //Text
             Text.Color = Color.Cyan;
             Text.Size = 50;
             Font uiText = Text.LoadFont("../../../assets/PixelSplitter-Bold.ttf");
             Text.Draw($"{player.health}", Window.Size - new Vector2(715, 57), uiText);
+        }
+
+        //Draws the background
+        void DrawBackground()
+        {
+            bgPosition += bgMovement;
+
+            Draw.FillColor = Color.Blue;
+            Draw.Rectangle(bgPosition.X, bgPosition.Y, bgPosition.X + 800, bgPosition.Y + 600);
+
+            //Background Texture
+            Texture2D textureBackground = Graphics.LoadTexture("../../../assets/OceanBG.png");
+            Graphics.Draw(textureBackground, bgPosition.X, bgPosition.Y - 600);
+
+            //If the background image reaches the top, reset back to starting position and keep moving (to produce pseudo-scrolling effect)
+            if(bgPosition.Y == 600)
+            {
+                bgPosition.Y = 0;
+            }
         }
 
         //Draw Game Over Screen
