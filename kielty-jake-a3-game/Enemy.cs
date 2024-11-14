@@ -10,10 +10,11 @@ public class Enemy
     public Vector2 size;
     public Vector2 velocity;
     public bool isVisible;
-
+     
+    //Enemy Texture
     Texture2D textureEnemy = Graphics.LoadTexture("../../../assets/EnemyV1.png");
 
-    //Draw enemy on screen
+    //Draw the enemy on the screen (drawing the texture) 
     public void DrawEnemy()
     {
         if (isVisible == true)
@@ -22,18 +23,18 @@ public class Enemy
             Draw.LineSize = 0;
             Draw.FillColor = Color.Clear;
             Draw.Rectangle(position, size);
-            Graphics.Draw(textureEnemy, position - (Vector2.One * 10));
+            Graphics.Draw(textureEnemy, position);
         }
     }
 
-    //Move enemy across screen
+    //Move the enemy down the screen
     public void EnemyMove()
     {
         Vector2 movement = new Vector2(0, 6);
-        position += movement;
+        position += (movement / 2);
     }
 
-    //Wrap enemy back to top of screen after they reach the bottom
+    //Wrap the enemy back to the top of the screen after they reach the bottom
     public bool KeepEnemyOnScreen()
     {
         bool doWrap = position.Y > Window.Height;

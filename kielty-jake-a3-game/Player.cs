@@ -8,27 +8,33 @@ public class Player
 {
     public Vector2 position;
     public Vector2 size;
+    public Vector2 bulletPosition;
+    public Vector2 bulletSize = new Vector2(4, 6);
     public float speed;
     public int health;
     public int score;
 
+    public bool isShooting = false;
+
+    //Used for setting up class in Game.cs
     public Player()
     {
 
     }
 
-    //Draw player
+    //Draw the player on the screen (drawing the texture)
     public void DrawPlayer()
     {
         Draw.LineSize = 0;
         Draw.FillColor = Color.Clear;
         Draw.Rectangle(position, size);
-        
+
+        //Player Texture
         Texture2D texturePlayer = Graphics.LoadTexture("../../../assets/Playerv2.png");
         Graphics.Draw(texturePlayer, position - (Vector2.One * 10));
     }
 
-    //Collision with enemy
+    //Collision - If your plane collides with the enemy, return true. This will remove 1 HP per hit.
     public bool DoesCollideWithEnemy(Enemy enemy)
     {
         if (enemy.isVisible == false)
@@ -53,7 +59,7 @@ public class Player
         return isColliding;
     }
 
-    //Player movement
+    //Player Movement - If the arrow keys are pressed, move the plane in the corresponding direction across the screen.
     public void Move()
     {
         //Move Left
@@ -105,5 +111,56 @@ public class Player
         }
 
     }
+
+    //Shoot - Fire a projectile when you press the spacebar
+    public void Shoot()
+    {
+        if (Input.IsKeyboardKeyPressed(KeyboardInput.Space))
+        {
+            bulletPosition = position;
+            isShooting = true;
+        }
+    }
+
+    //Spawn Bullet - This draws and moves a bullet when isShooting == true. This basically allows it to continue traveling beyond the frame or two that the button is pressed. 
+    public void SpawnBullet()
+    {
+        if (isShooting == true)
+        {
+            Vector2 bulletVelocity = new Vector2(0, -3);
+            bulletPosition += bulletVelocity;
+
+            Draw.LineSize = 0;
+            Draw.FillColor = Color.Red;
+            Draw.Rectangle(bulletPosition.X + 38, bulletPosition.Y + 37, bulletSize.X, bulletSize.Y);
+        }
+    }
+
+    //Bullet Collision - This checks if the bullet has hit an enemy, and then returns a true or false depending on whether it did or not. 
+    public bool DoesBulletHitEnemy(Enemy enemy)
+    {
+        //If the enemy isn't even visible, they should not count for points. 
+        if (enemy.isVisible == false)
+            return false;
+
+        float bulletLeft = bulletPosition.X;
+        float bulletRight = bulletPosition.X + bulletSize.X;
+        float bulletTop = bulletPosition.Y;
+        float bulletBottom = bulletPosition.Y + bulletSize.Y;
+
+        float enemyLeft = enemy.position.X;
+        float enemyRight = enemy.position.X + size.X;
+        float enemyTop = enemy.position.Y;
+        float enemyBottom = enemy.position.Y + size.Y;
+
+        bool isHittingEnemyLeftEdge = bulletRight > enemyLeft;
+        bool isHittingEnemyRightEdge = bulletLeft < enemyRight;
+        bool isHittingEnemyTopEdge = bulletBottom > enemyTop;
+        bool isHittingEnemyBottomEdge = bulletTop < enemyBottom;
+        bool isColliding = isHittingEnemyLeftEdge && isHittingEnemyRightEdge && isHittingEnemyTopEdge && isHittingEnemyBottomEdge;
+
+        return isColliding;
+    }
+
 }
 

@@ -10,9 +10,10 @@ public class Cloud
     public Vector2 velocity;
     public bool isVisible;
 
+    //Cloud Texture
     Texture2D textureCloud = Graphics.LoadTexture("../../../assets/Clouds.png");
 
-    //Draw Clouds on screen
+    //Draw the clouds on the screen (drawing the texture)
     public void DrawCloud()
     {
             Draw.LineSize = 0;
@@ -21,14 +22,14 @@ public class Cloud
             Graphics.Draw(textureCloud, position.X - 35, position.Y - 20);    
     }
 
-    //Move clouds across screen
+    //Move the clouds across the screen.
     public void MoveCloud()
     {
         Vector2 velocity = new Vector2(0, 2);
         position += velocity;
     }
 
-    //Wrap Clouds back to top of screen
+    //Wrap the clouds back to the top of the screen when they reach the bottom.
     public bool KeepCloudOnScreen()
     {
         bool doWrap = position.Y > Window.Height;
