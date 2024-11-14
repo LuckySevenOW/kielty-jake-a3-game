@@ -2,7 +2,6 @@
 using Raylib_cs;
 using System;
 using System.Numerics;
-using System.Threading.Tasks.Sources;
 
 // The namespace your code is in.
 namespace Game10003;
@@ -29,7 +28,7 @@ public class Game
     public void Setup()
     {
         Window.SetSize(800, 600);
-        Window.SetTitle("Air Defense");
+        Window.SetTitle("Air Defence");
 
         player.position.X = Window.Width / 2;
         player.position.Y = Window.Height - 100;
