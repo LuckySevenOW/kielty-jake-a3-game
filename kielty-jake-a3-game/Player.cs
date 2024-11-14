@@ -30,7 +30,7 @@ public class Player
         Draw.Rectangle(position, size);
 
         //Player Texture
-        Texture2D texturePlayer = Graphics.LoadTexture("../../../assets/Playerv2.png");
+        Texture2D texturePlayer = Graphics.LoadTexture("../../../assets/PlayerV2.png");
         Graphics.Draw(texturePlayer, position - (Vector2.One * 10));
     }
 
@@ -117,7 +117,8 @@ public class Player
     {
         if (Input.IsKeyboardKeyPressed(KeyboardInput.Space))
         {
-            bulletPosition = position;
+            bulletPosition.X = position.X + 40;
+            bulletPosition.Y = position.Y + 8;
             isShooting = true;
         }
     }
@@ -131,8 +132,11 @@ public class Player
             bulletPosition += bulletVelocity;
 
             Draw.LineSize = 0;
-            Draw.FillColor = Color.Red;
-            Draw.Rectangle(bulletPosition.X + 38, bulletPosition.Y + 37, bulletSize.X, bulletSize.Y);
+            Draw.FillColor = Color.Clear;
+            Draw.Rectangle(bulletPosition.X, bulletPosition.Y, bulletSize.X, bulletSize.Y);
+
+            Texture2D textureBullet = Graphics.LoadTexture("../../../assets/Missile.png");
+            Graphics.Draw(textureBullet, bulletPosition);
         }
     }
 

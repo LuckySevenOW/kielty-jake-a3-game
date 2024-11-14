@@ -186,7 +186,7 @@ public class Game
             Draw.Rectangle(bgPosition.X, bgPosition.Y, bgPosition.X + 800, bgPosition.Y + 600);
 
             //Background Texture
-            Texture2D textureBackground = Graphics.LoadTexture("../../../assets/OceanBG.png");
+            Texture2D textureBackground = Graphics.LoadTexture("../../../assets/OceanBGV2.png");
             Graphics.Draw(textureBackground, bgPosition.X, bgPosition.Y - 600);
 
             //If the background image reaches the top, reset back to starting position and keep moving (to produce pseudo-scrolling effect)
